@@ -1,43 +1,39 @@
-import {useState} from 'react';
+import React, { useEffect } from 'react';
+import p5 from 'p5';
 
-const DynamicList = () => {
-  // Creates the data
-  const [data, setData] = useState(['monkey','ethan','ritz crackers','apple sauce','hello kitty','food','desk','murphy','pewpew','bernard']);
+const Game = () => {
+  useEffect(() => {
+    const sketch = (p) => {
+      let x = 50;
+      let y = 50;
 
-  // Sets the type of list 'ol' or 'ul'
-  const [type, setType] = useState('ol');
+      p.setup = () => {
+        p.createCanvas(400, 400);
+      };
 
-  // Set the orinatation 'horizontal' or 'vertical'
-  const [orientation, setOrientation] = useState('vertical')
+      p.draw = () => {
+        p.background(0);
+        p.fill(255);
+        p.rect(x, y, 50, 50);
+      };
 
-  // checks to see if the type is ul
-  if(type === 'ul'){
-    return (
-      // iterates through the data creating a list item for each
-      <ul className={orientation}>
-      {data.map((item) => {
-        return ( 
-          <li key={item} className='dataItem'>
-            <h4>{item}</h4>
-          </li>
-        );
-      })}
-      </ul>
-    )
-  }
+      p.keyPressed = () => {
+        if (p.keyCode === p.LEFT_ARROW) {
+          x -= 5;
+        } else if (p.keyCode === p.RIGHT_ARROW) {
+          x += 5;
+        } else if (p.keyCode === p.UP_ARROW) {
+          y -= 5;
+        } else if (p.keyCode === p.DOWN_ARROW) {
+          y += 5;
+        }
+      };
+    };
 
-  return (
-    // iterates through the data creating a list item for each
-    <ol className ={orientation}>
-      {data.map((item) => {
-        return ( 
-          <li key={item} className='dataItem'>
-            <h4>{item}</h4>
-          </li>
-        );
-      })}
-    </ol>
-  )
-}
+    new p5(sketch);
+  }, []);
 
-export default DynamicList
+  return <div id="game-container"></div>;
+};
+
+export default Game;
